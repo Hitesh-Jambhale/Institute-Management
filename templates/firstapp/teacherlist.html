@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+<title>Students</title>
+{% endblock %}
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+<div class="text-center">
+    <h1 class="p-2">Teachers</h1>
+    <table class="table table-hover table-secondary table-bordered">
+        <tr>
+            <th>No</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>-</th>
+            <th>-</th>
+        </tr>
+        {% for teach in teacher %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ teach.name }}</td>
+
+            <td>
+                {% for d in teach.department.all %}
+                {{ d.name }}
+                <br>
+                {% endfor %}
+            </td>
+
+            <td><a class="btn btn-danger" href="{% url 'dtpage' teach.emp_id %}">Delete</a></td>
+            <td><a class="btn btn-info" href="{% url 'utpage' teach.emp_id %}">Update</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
+
+{% block search %}
+<ul class="navbar-nav">
+    <li class="nav-item  " >
+        <a class="nav-link btn btn-info btn btn-info" href="{% url 'ctpage' %}">Add Teacher</a>
+    </li>
+    <li class="nav-item">
+        <form method="POST" class="form-inline my-2 my-lg-0">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" type="search" name ="data" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Teacher</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}
